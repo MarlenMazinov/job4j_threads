@@ -19,19 +19,19 @@ public class ParseFile {
     }
 
     public synchronized String content(Predicate<Character> filter) {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         try (BufferedInputStream in =
                      new BufferedInputStream(new FileInputStream(file))) {
             int bytesRead;
             while ((bytesRead = in.read()) != -1) {
                 char ch = (char) bytesRead;
                 if (filter.test(ch)) {
-                    output += ch;
+                    output.append(ch);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return output;
+        return output.toString();
     }
 }
