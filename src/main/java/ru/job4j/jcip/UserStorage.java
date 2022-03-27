@@ -9,12 +9,12 @@ import java.util.Map;
 @ThreadSafe
 public class UserStorage {
     @GuardedBy("this")
-    private volatile Map<Integer, User> usersStore = new HashMap<>();
+    private final Map<Integer, User> usersStore = new HashMap<>();
 
     public synchronized boolean add(User user) {
         boolean rsl = false;
         if (user != null) {
-            rsl = usersStore.put(user.getId(), user) != null;
+            rsl = usersStore.putIfAbsent(user.getId(), user) != null;
         }
         return rsl;
     }
