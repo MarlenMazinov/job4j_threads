@@ -14,7 +14,7 @@ public class UserStorage {
     public synchronized boolean add(User user) {
         boolean rsl = false;
         if (user != null) {
-            rsl = usersStore.putIfAbsent(user.getId(), user) != null;
+            rsl = usersStore.putIfAbsent(user.getId(), user) == null;
         }
         return rsl;
     }
@@ -30,7 +30,7 @@ public class UserStorage {
     public synchronized boolean delete(User user) {
         boolean rsl = false;
         if (user != null) {
-            rsl = usersStore.remove(user.getId()) != null;
+            rsl = usersStore.remove(user.getId(), user);
         }
         return rsl;
     }
@@ -39,7 +39,7 @@ public class UserStorage {
         boolean rsl = false;
         User sender = usersStore.getOrDefault(fromId, null);
         User receiver = usersStore.getOrDefault(toId, null);
-        if (sender != null && receiver != null) {
+        if (sender != null && receiver != null && sender.getAmount() >= amount) {
             sender.setAmount(sender.getAmount() - amount);
             receiver.setAmount((receiver.getAmount() + amount));
             rsl = update(sender) && update(receiver);
