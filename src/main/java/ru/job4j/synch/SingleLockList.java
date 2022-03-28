@@ -14,8 +14,7 @@ public class SingleLockList<T> implements Iterable<T> {
     private final List<T> list;
 
     public SingleLockList(List<T> list) {
-        this.list = list.stream()
-                .collect(Collectors.toList());
+        this.list = copy(list);
     }
 
     public synchronized void add(T value) {
@@ -27,8 +26,12 @@ public class SingleLockList<T> implements Iterable<T> {
     }
 
     @Override
-    public Iterator<T> iterator() {
+    public synchronized Iterator<T> iterator() {
+        return copy(list).iterator();
+    }
+
+    private List<T> copy(List<T> list) {
         return list.stream()
-                .collect(Collectors.toList()).iterator();
+                .collect(Collectors.toList());
     }
 }
