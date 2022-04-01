@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class SimpleBlockingQueueTest {
 
     @Test
-    public void whenProducerConsumerIsCorrect() throws InterruptedException{
+    public void whenProducerConsumerIsCorrect() throws InterruptedException {
         List<Integer> rsl = new ArrayList<>();
         SimpleBlockingQueue<Integer> simpleBlockingQueue = new SimpleBlockingQueue<>(1);
         Thread producer = new Thread(() -> {
