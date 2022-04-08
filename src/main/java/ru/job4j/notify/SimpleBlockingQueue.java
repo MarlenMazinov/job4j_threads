@@ -33,4 +33,8 @@ public class SimpleBlockingQueue<T> {
         this.notify();
         return rsl;
     }
+
+    public synchronized boolean isEmpty() throws InterruptedException {
+        return queue.isEmpty();
+    }
 }
