@@ -63,7 +63,10 @@ public class SimpleBlockingQueueTest {
                 () -> {
                     while (true) {
                         try {
-                            if (!(!queue.isEmpty() || !Thread.currentThread().isInterrupted())) break;
+                            if (!(!queue.isEmpty() ||
+                                    !Thread.currentThread().isInterrupted())) {
+                                break;
+                            }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
