@@ -22,7 +22,6 @@ public class Cache {
             }
             Base updated = new Base(key, value.getVersion() + 1);
             updated.setName(value.getName());
-            memory.replace(key, stored, updated);
             return updated;
         });
         return updatedBase != null;
