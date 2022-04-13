@@ -1,6 +1,7 @@
 package ru.job4j.cache;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class CacheTest {
