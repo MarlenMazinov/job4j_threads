@@ -12,6 +12,18 @@ public class ThreadPool {
     public ThreadPool() {
         int size = Runtime.getRuntime().availableProcessors();
         this.tasks = new SimpleBlockingQueue<>(size);
+        startThreads(size);
+    }
+
+    public void work(Runnable job) throws InterruptedException {
+        tasks.offer(job);
+    }
+
+    public void shutdown() {
+        threads.forEach(Thread::interrupt);
+    }
+
+    private void startThreads(int size) {
         for (int i = 0; i < size; i++) {
             Thread thread = new Thread(() -> {
                 while (true) {
@@ -25,13 +37,5 @@ public class ThreadPool {
             thread.start();
             threads.add(thread);
         }
-    }
-
-    public void work(Runnable job) throws InterruptedException {
-        tasks.offer(job);
-    }
-
-    public void shutdown() {
-        threads.forEach(Thread::interrupt);
     }
 }
