@@ -26,11 +26,11 @@ public class ThreadPool {
     private void startThreads(int size) {
         for (int i = 0; i < size; i++) {
             Thread thread = new Thread(() -> {
-                while (true) {
+                while (!Thread.currentThread().isInterrupted()) {
                     try {
                         tasks.poll().run();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
                     }
                 }
             });
