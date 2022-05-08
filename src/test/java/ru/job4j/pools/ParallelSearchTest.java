@@ -1,6 +1,7 @@
 package ru.job4j.pools;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class ParallelSearchTest {
@@ -16,7 +17,7 @@ public class ParallelSearchTest {
     @Test
     public void whenArrayOfIntegerAndSize15() {
         Integer[] array = new Integer[15];
-        for(int i = 0; i < 15; i++) {
+        for (int i = 0; i < 15; i++) {
             array[i] = i;
         }
         ParallelSearch<Integer> parallelSearch =
