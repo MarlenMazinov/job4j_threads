@@ -25,20 +25,19 @@ public class ParallelSearch<T> extends RecursiveTask<Integer> {
                     return i;
                 }
             }
-        } else {
-            int mid = (from + to) / 2;
-            ParallelSearch<T> leftParallelSearch = new ParallelSearch<>(array, from, mid, object);
-            ParallelSearch<T> rightParallelSearch =
-                    new ParallelSearch<>(array, mid + 1, to, object);
-            leftParallelSearch.fork();
-            rightParallelSearch.fork();
-            return leftParallelSearch.join() + rightParallelSearch.join();
+            return -1;
         }
-        return 0;
+        int mid = (from + to) / 2;
+        ParallelSearch<T> leftParallelSearch = new ParallelSearch<>(array, from, mid, object);
+        ParallelSearch<T> rightParallelSearch =
+                new ParallelSearch<>(array, mid + 1, to, object);
+        leftParallelSearch.fork();
+        rightParallelSearch.fork();
+        return Math.max(leftParallelSearch.join(), rightParallelSearch.join());
     }
 
     public int search(T[] array, T object) {
-        ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
+        ForkJoinPool forkJoinPool = new ForkJoinPool();
         return forkJoinPool.invoke(new ParallelSearch<>(array, 0, array.length - 1, object));
     }
 }
