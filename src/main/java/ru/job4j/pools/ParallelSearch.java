@@ -3,35 +3,42 @@ package ru.job4j.pools;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
-public class ParallelSearch<T> extends RecursiveTask<T> {
+public class ParallelSearch<T> extends RecursiveTask<Integer> {
 
     private final T[] array;
+    private final int from;
+    private final int to;
     private final T object;
-    private T rsl;
 
-    public ParallelSearch(T[] array, T object) {
+    public ParallelSearch(T[] array, int from, int to, T object) {
         this.array = array;
+        this.from = from;
+        this.to = to;
         this.object = object;
     }
 
     @Override
-    protected T compute() {
-        if (array.length <= 10) {
-            for (T obj : array) {
-                if (object.equals(obj)) {
-                    rsl = obj;
+    protected Integer compute() {
+        if (to < 10) {
+            for (int i = 0; i <= to; i++) {
+                if (object.equals(array[i])) {
+                    return i;
                 }
             }
         } else {
-            ParallelSearch<T> parallelSearch = new ParallelSearch<>(array, object);
-            parallelSearch.fork();
-            rsl = parallelSearch.join();
+            int mid = (from + to) / 2;
+            ParallelSearch<T> leftParallelSearch = new ParallelSearch<>(array, from, mid, object);
+            ParallelSearch<T> rightParallelSearch =
+                    new ParallelSearch<>(array, mid + 1, to, object);
+            leftParallelSearch.fork();
+            rightParallelSearch.fork();
+            return leftParallelSearch.join() + rightParallelSearch.join();
         }
-        return rsl;
+        return 0;
     }
 
-    public T search(T[] array, T object) {
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        return forkJoinPool.invoke(new ParallelSearch<>(array, object));
+    public int search(T[] array, T object) {
+        ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
+        return forkJoinPool.invoke(new ParallelSearch<>(array, 0, array.length - 1, object));
     }
 }
