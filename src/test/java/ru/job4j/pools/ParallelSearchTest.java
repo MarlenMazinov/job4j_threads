@@ -24,4 +24,15 @@ public class ParallelSearchTest {
                 new ParallelSearch<>(array, 0, array.length - 1, 13);
         assertEquals(13, parallelSearch.search(array, 13));
     }
+
+    @Test
+    public void whenArrayOfIntegerAndNoElement() {
+        Integer[] array = new Integer[15];
+        for (int i = 0; i < 15; i++) {
+            array[i] = i;
+        }
+        ParallelSearch<Integer> parallelSearch =
+                new ParallelSearch<>(array, 0, array.length - 1, 20);
+        assertEquals(-1, parallelSearch.search(array, 20));
+    }
 }
